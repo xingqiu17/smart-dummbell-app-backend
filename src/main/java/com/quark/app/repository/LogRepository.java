@@ -2,6 +2,8 @@ package com.quark.app.repository;
 
 import com.quark.app.entity.Log;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,5 +20,12 @@ public interface LogRepository extends JpaRepository<Log, Integer> {
     List<Log> findByUserIdAndType(Integer userId, Integer type);
 
     /** 查询某用户在指定时间区间内的训练记录 */
-    List<Log> findByUserIdAndTTimeBetween(Integer userId, LocalDateTime start, LocalDateTime end);
+     @Query("""
+        select l from Log l
+        where l.userId = :userId
+          and l.tTime between :start and :end
+        """)
+    List<Log> findByUserIdAndtTimeBetween(@Param("userId") Integer userId,
+                                          @Param("start") LocalDateTime start,
+                                          @Param("end")   LocalDateTime end);
 }

@@ -41,7 +41,7 @@ public class LogService {
 
     /** 查询某用户在给定时间区间内的训练记录 */
     public List<Log> listByUserAndPeriod(Integer userId, LocalDateTime start, LocalDateTime end) {
-        return repo.findByUserIdAndTTimeBetween(userId, start, end);
+        return repo.findByUserIdAndtTimeBetween(userId, start, end);
     }
 
     /** 更新训练记录 */

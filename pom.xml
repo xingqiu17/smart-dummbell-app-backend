@@ -38,11 +38,13 @@
     </dependency>
 
     <!-- MySQL 驱动 -->
+    <!-- 保留 Spring Boot 的版本管理即可，不用 scope -->
     <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <scope>runtime</scope>
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.4.0</version>   <!-- 8.4.x 开始官方声明兼容 JDK 22 -->
     </dependency>
+
 
     <!-- OpenAPI & Swagger-UI -->
     <dependency>
