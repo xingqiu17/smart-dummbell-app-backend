@@ -16,9 +16,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <!-- ② Java 22 -->
+  <!-- ② Java 版本改为 21 -->
   <properties>
-    <java.version>22</java.version>
+    <java.version>21</java.version>
     <!-- 可根据需要锁定第三方库版本 -->
     <springdoc.version>2.5.0</springdoc.version>
   </properties>
@@ -38,13 +38,11 @@
     </dependency>
 
     <!-- MySQL 驱动 -->
-    <!-- 保留 Spring Boot 的版本管理即可，不用 scope -->
     <dependency>
-        <groupId>com.mysql</groupId>
-        <artifactId>mysql-connector-j</artifactId>
-        <version>8.4.0</version>   <!-- 8.4.x 开始官方声明兼容 JDK 22 -->
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.4.0</version>
     </dependency>
-
 
     <!-- OpenAPI & Swagger-UI -->
     <dependency>
@@ -61,9 +59,20 @@
     </dependency>
   </dependencies>
 
-  <!-- ④ 可执行 JAR -->
+  <!-- ④ 编译和打包配置 -->
   <build>
     <plugins>
+      <!-- 确保编译产物兼容 Java 21 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <release>${java.version}</release>
+        </configuration>
+      </plugin>
+
+      <!-- Spring Boot 可执行 JAR -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
