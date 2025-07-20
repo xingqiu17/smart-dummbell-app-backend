@@ -16,7 +16,7 @@ public class User implements Serializable {
     private Integer userId;
 
     /** 硬件 ID：HW_id */
-    @Column(name = "HW_id", nullable = false)
+    @Column(name = "HW_id", nullable = true)
     private Integer hwId;
 
     /** 账号（登录名） */

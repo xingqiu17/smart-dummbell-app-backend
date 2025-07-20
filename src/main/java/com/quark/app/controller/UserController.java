@@ -28,21 +28,32 @@ public class UserController {
     /* ------------------------------------------------------------------ */
     /* 注册                                                                */
     /* ------------------------------------------------------------------ */
+    /* ---------- 注册：仅账号 + 密码，其余写默认值 ---------- */
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody @Valid RegisterReq req) {
         User u = new User();
-        u.setHwId(req.hwId());
         u.setAccount(req.account());
-        u.setPassword(req.password());
-        u.setName(req.name());
-        u.setGender(req.gender());
-        u.setHeight(req.height());
-        u.setWeight(req.weight());
-        u.setBirthday(req.birthday());
-        u.setAim(req.aim());
-        User saved = userService.register(u);          // 由 Service 做账号重复校验
-        return ResponseEntity.ok(saved);
+        u.setHwId(0);
+        u.setPassword(req.password());           // ← 记得 Service 里做 MD5+盐
+        u.setGender(0);
+        u.setBirthday(LocalDate.of(2000, 1, 1));
+        u.setHeight(0f);
+        u.setWeight(0f);
+        u.setAim(0);
+        u.setHwWeight(0f);
+
+        u.setName("用户");  // ← 先给一个非空的临时名字
+
+        // ① 先保存，拿到自增 ID
+        u = userService.register(u);
+
+        // ② 再用带 ID 的名字更新一次
+        u.setName("用户" + u.getUserId());
+        u = userService.save(u);
+
+        return ResponseEntity.ok(u);
     }
+
 
     /* ------------------------------------------------------------------ */
     /* 登录：成功返回用户信息，失败返回 401                                 */

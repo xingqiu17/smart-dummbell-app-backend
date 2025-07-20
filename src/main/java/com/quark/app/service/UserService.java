@@ -36,4 +36,10 @@ public class UserService {
         return repo.findById(id)
                    .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
     }
+
+    /** 保存（用于二次更新昵称等） */
+    public User save(User u) {
+        return repo.save(u);
+    }
+
 }
