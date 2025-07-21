@@ -31,7 +31,7 @@ public class User implements Serializable {
     @Column(name = "name", length = 16, nullable = false)
     private String name;
 
-    /** 性别：0=男 1=女 */
+    /** 性别：0=不便透露 1=男 2=女 */
     @Column(name = "gender", nullable = false)
     private Integer gender;
 

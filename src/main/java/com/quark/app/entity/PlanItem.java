@@ -2,25 +2,21 @@ package com.quark.app.entity;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "plan")
-public class Plan implements Serializable {
+@Table(name = "plan_item")
+public class PlanItem implements Serializable {
 
-    /** 主键：plan_id */
+    /** 主键：item_id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "plan_id", nullable = false, updatable = false)
-    private Integer planId;
+    @Column(name = "item_id", nullable = false, updatable = false)
+    private Integer itemId;
 
-    /** 用户 ID */
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
-    /** 计划日期 */
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    /** 关联的计划头 */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", nullable = false)
+    private PlanSession session;
 
     /** 练习类型 */
     @Column(name = "type", nullable = false)
@@ -39,30 +35,23 @@ public class Plan implements Serializable {
     private Integer tWeight;
 
     /** 完成标志：0=未完成 1=已完成 */
-    @Column(name = "compelete", nullable = false)
-    private Boolean compelete;
+    @Column(name = "complete", nullable = false)
+    private Boolean complete = false;
 
-    /* ==== Getter / Setter ==== */
+    /* ===== Getter / Setter ===== */
 
-    public Integer getPlanId() {
-        return planId;
+    public Integer getItemId() {
+        return itemId;
     }
-    public void setPlanId(Integer planId) {
-        this.planId = planId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public PlanSession getSession() {
+        return session;
     }
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setSession(PlanSession session) {
+        this.session = session;
     }
 
     public Integer getType() {
@@ -93,24 +82,23 @@ public class Plan implements Serializable {
         this.tWeight = tWeight;
     }
 
-    public Boolean getCompelete() {
-        return compelete;
+    public Boolean getComplete() {
+        return complete;
     }
-    public void setCompelete(Boolean compelete) {
-        this.compelete = compelete;
+    public void setComplete(Boolean complete) {
+        this.complete = complete;
     }
 
     @Override
     public String toString() {
-        return "Plan{" +
-               "planId=" + planId +
-               ", userId=" + userId +
-               ", date=" + date +
+        return "PlanItem{" +
+               "itemId=" + itemId +
+               ", sessionId=" + (session != null ? session.getSessionId() : null) +
                ", type=" + type +
                ", number=" + number +
                ", tOrder=" + tOrder +
                ", tWeight=" + tWeight +
-               ", compelete=" + compelete +
+               ", complete=" + complete +
                '}';
     }
 }

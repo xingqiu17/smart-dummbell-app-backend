@@ -18,7 +18,7 @@
 
   <!-- ② Java 版本改为 21 -->
   <properties>
-    <java.version>21</java.version>
+    <java.version>17</java.version>
     <!-- 可根据需要锁定第三方库版本 -->
     <springdoc.version>2.5.0</springdoc.version>
   </properties>

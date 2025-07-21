@@ -74,6 +74,63 @@ public class UserController {
         return ResponseEntity.ok(userService.detail(id));
     }
 
+
+    // UserController.java 内部新增
+    @PostMapping("/{id}/trainData")
+    public ResponseEntity<User> updateTrainData(
+            @PathVariable Integer id,
+            @RequestBody @Valid TrainDataReq req) {
+
+        User updated = userService.updateTrainData(id, req.aim(), req.hwWeight());
+        return ResponseEntity.ok(updated);
+    }
+
+    public record TrainDataReq(
+            @NotNull Integer aim,      // 0=无目标 1=手臂 ……
+            @NotNull @Positive Float hwWeight
+    ) {}
+
+    @PostMapping("/{id}/name")
+    public ResponseEntity<User> updateName(
+            @PathVariable Integer id,
+            @RequestBody @Valid UpdateNameReq req) {
+        User updated = userService.updateName(id, req.name());
+        return ResponseEntity.ok(updated);
+    }
+
+    public record UpdateNameReq(
+            @NotBlank @Size(max = 16) String name
+    ) {}
+
+    /**
+     * 修改身体数据：出生日期、身高、体重、性别
+     */
+    @PostMapping("/{id}/body")
+    public ResponseEntity<User> updateBodyData(
+            @PathVariable Integer id,
+            @RequestBody @Valid BodyDataReq req) {
+        User updated = userService.updateBodyData(
+                id,
+                req.birthday(),
+                req.height(),
+                req.weight(),
+                req.gender()
+        );
+        return ResponseEntity.ok(updated);
+    }
+
+    public record BodyDataReq(
+            @NotNull
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate birthday,
+
+            @NotNull @Positive Float height,
+            @NotNull @Positive Float weight,
+
+            @NotNull @Min(0) @Max(2) Integer gender
+    ) {}
+
+
     /* ================================================================== */
     /* ====== 简单 DTO —— 用 Java 22 record 写法 ========================= */
     /* ================================================================== */
@@ -86,7 +143,7 @@ public class UserController {
             @NotBlank @Size(max = 16) String account,
             @NotBlank @Size(max = 32) String password,
             @NotBlank @Size(max = 16) String name,
-            @NotNull @Min(0) @Max(1) Integer gender,
+            @NotNull @Min(0) @Max(2) Integer gender,
             @NotNull @Positive Float height,
             @NotNull @Positive Float weight,
             @NotNull

@@ -5,6 +5,7 @@ import com.quark.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,38 @@ public class UserService {
     public User save(User u) {
         return repo.save(u);
     }
+
+    @Transactional
+    public User updateTrainData(Integer id, Integer aim, Float hwWeight) {
+        User u = repo.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+        u.setAim(aim);
+        u.setHwWeight(hwWeight);
+        return repo.save(u);
+    }
+
+    /** 修改用户名 */
+    public User updateName(Integer id, String name) {
+        User u = repo.findById(id)
+                     .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+        u.setName(name);
+        return repo.save(u);
+    }
+
+    /** 修改身体数据 */
+    public User updateBodyData(Integer id,
+                               LocalDate birthday,
+                               Float height,
+                               Float weight,
+                               Integer gender) {
+        User u = repo.findById(id)
+                     .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+        u.setBirthday(birthday);
+        u.setHeight(height);
+        u.setWeight(weight);
+        u.setGender(gender);
+        return repo.save(u);
+    }
+
 
 }
