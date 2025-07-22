@@ -9,35 +9,55 @@ import java.io.Serializable;
 @Entity
 @Table(name = "log_work")
 public class LogWork implements Serializable {
-
-    /** 动作评分记录主键 ID */
+        /** 主键：item_id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Integer id;
+    @Column(name = "action_id", nullable = false, updatable = false)
+    private Integer actionId;
 
-    /** 所属训练记录组 ID */
-    @Column(name = "group_id", nullable = false)
-    private Integer groupId;
+    /** 关联的计划头 */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false)
+    private LogItem group;
 
-    /** 本次动作评分 */
+
+
+
+    /** 执行顺序 */
+    @Column(name = "ac_order", nullable = false)
+    private Integer acOrder;
+
+    /** 练习得分 */
     @Column(name = "score", nullable = false)
     private Integer score;
 
-    /* ==== Getter / Setter ==== */
 
-    public Integer getId() {
-        return id;
+    /* ===== Getter / Setter ===== */
+
+    public Integer getActionId() {
+        return actionId;
     }
-    public void setId(Integer id) {
-        this.id = id;
+    public void setActionId(Integer actionId) {
+        this.actionId = actionId;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+
+    public LogItem getGroup() {
+        return group;
     }
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+
+    public void setGroup(LogItem group) {
+        this.group = group;
+    }
+
+
+
+
+    public Integer getTAcOrder() {
+        return acOrder;
+    }
+    public void setTAcOrder(Integer acOrder) {
+        this.acOrder = acOrder;
     }
 
     public Integer getScore() {
@@ -47,12 +67,16 @@ public class LogWork implements Serializable {
         this.score = score;
     }
 
+
+
     @Override
     public String toString() {
         return "LogWork{" +
-               "id=" + id +
-               ", groupId=" + groupId +
+               "actionId=" + actionId +
+               ", groupId=" + (group != null ? group.getGroupId() : null) +
+               ", acOrder=" + acOrder +
                ", score=" + score +
                '}';
     }
 }
+
