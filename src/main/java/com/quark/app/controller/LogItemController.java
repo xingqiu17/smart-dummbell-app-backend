@@ -2,7 +2,6 @@ package com.quark.app.controller;
 
 import com.quark.app.entity.LogItem;
 import com.quark.app.service.LogItemService;
-import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,7 @@ public class LogItemController {
      */
     @GetMapping("/session/{recordId}")
     public ResponseEntity<List<LogItem>> getItemsBySession(
-            @PathVariable @Positive Integer recordId
+            @PathVariable  Integer recordId
     ) {
         List<LogItem> items = itemService.getItemsBySessionId(recordId);
         if (items.isEmpty()) {

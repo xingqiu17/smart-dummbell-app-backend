@@ -7,24 +7,23 @@ import com.quark.app.repository.PlanSessionRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional  // 默认所有方法都在事务中
 public class PlanSessionService {
 
     private final PlanSessionRepository sessionRepo;
-    private final PlanItemRepository    itemRepo;
+    private final PlanItemService         itemService;
 
     public PlanSessionService(PlanSessionRepository sessionRepo,
-                              PlanItemRepository itemRepo) {
+                              PlanItemService itemService) {
         this.sessionRepo = sessionRepo;
-        this.itemRepo    = itemRepo;
+        this.itemService = itemService;
     }
 
     /**
@@ -37,11 +36,8 @@ public class PlanSessionService {
         session.setComplete(false);
         PlanSession savedSession = sessionRepo.save(session);
 
-        for (PlanItem item : items) {
-            item.setSession(savedSession);
-        }
-        itemRepo.saveAll(items);
-
+        items.forEach(item -> item.setSession(savedSession));
+        itemService.saveAll(items);
         return savedSession;
     }
 
@@ -55,28 +51,61 @@ public class PlanSessionService {
             .stream()
             .map(session -> new PlanDayDto(
                 session,
-                itemRepo.findBySessionSessionId(
-                    session.getSessionId(),
-                    Sort.by(Sort.Direction.ASC, "tOrder")
-                )
+                itemService.listItemsBySession(session.getSessionId())
             ))
             .collect(Collectors.toList());
     }
 
     /**
-     * （兼容用）查询某用户某日的第一条训练计划
+     * ① 完整更新指定计划头（userId/date）和明细（删除旧明细后批量保存新明细）
+     */
+    public void updateSession(Integer sessionId, Integer newUserId, LocalDate newDate) {
+        PlanSession session = sessionRepo.findById(sessionId)
+            .orElseThrow(() -> new IllegalArgumentException("计划未找到: " + sessionId));
+        session.setUserId(newUserId);
+        session.setDate(newDate);
+        sessionRepo.save(session);
+    }
+
+    public void updateItems(Integer sessionId, List<PlanItem> newItems) {
+        // 1) 删除旧的
+        itemService.deleteBySessionId(sessionId);
+        // 2) 关联 session 并保存
+        PlanSession session = findById(sessionId);
+        newItems.forEach(i -> i.setSession(session));
+        itemService.saveAll(newItems);
+    }
+
+    /**
+     * ② 单独更新 complete 标志
+     */
+    public void updateCompleteFlag(Integer sessionId, Boolean complete) {
+        PlanSession session = sessionRepo.findById(sessionId)
+            .orElseThrow(() -> new IllegalArgumentException("计划未找到: " + sessionId));
+        session.setComplete(complete);
+        sessionRepo.save(session);
+    }
+
+    /**
+     * 辅助：根据 ID 查询 PlanSession，找不到抛异常
      */
     @Transactional(readOnly = true)
-    public Optional<PlanDayDto> getDayPlan(Integer userId, LocalDate date) {
-        return sessionRepo.findByUserIdAndDate(userId, date)
-            .map(session -> new PlanDayDto(
-                session,
-                itemRepo.findBySessionSessionId(
-                    session.getSessionId(),
-                    Sort.by(Sort.Direction.ASC, "tOrder")
-                )
-            ));
+    public PlanSession findById(Integer sessionId) {
+        return sessionRepo.findById(sessionId)
+            .orElseThrow(() -> new IllegalArgumentException("计划未找到: " + sessionId));
     }
+
+
+    /**
+     * 删除整个训练计划（先删明细，再删头）
+     */
+    public void deleteById(Integer sessionId) {
+        // 删除该计划下所有动作明细
+        itemService.deleteBySessionId(sessionId);
+        // 删除计划头
+        sessionRepo.deleteById(sessionId);
+    }
+
 
     /* ====== 简易 DTO ====== */
     public record PlanDayDto(PlanSession session, List<PlanItem> items) {}

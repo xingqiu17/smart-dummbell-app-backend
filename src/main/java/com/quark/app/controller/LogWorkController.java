@@ -2,7 +2,6 @@ package com.quark.app.controller;
 
 import com.quark.app.entity.LogWork;
 import com.quark.app.service.LogWorkService;
-import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +26,31 @@ public class LogWorkController {
      * GET /api/log/work/item/{groupId}
      *
      * @param groupId 运动组 ID
-     * @return 该组下的所有 LogWork 列表
+     * @return 该组下的所有动作得分（轻量 DTO，避免懒加载代理序列化问题）
      */
     @GetMapping("/item/{groupId}")
-    public ResponseEntity<List<LogWork>> getWorksByGroup(
-            @PathVariable @Positive Integer groupId
-    ) {
+    public ResponseEntity<List<WorkResp>> getWorksByGroup(@PathVariable Integer groupId) {
         List<LogWork> works = workService.getWorksByGroupId(groupId);
         if (works.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(works);
+        // 映射为轻量 DTO，仅返回需要的字段，避免序列化 Hibernate 懒加载代理
+        List<WorkResp> resp = works.stream()
+                .map(w -> new WorkResp(
+                        w.getActionId(),
+                        (w.getGroup() != null ? w.getGroup().getGroupId() : groupId),
+                        w.getTAcOrder(),
+                        w.getScore()
+                ))
+                .toList();
+        return ResponseEntity.ok(resp);
     }
+
+    /** 轻量响应体，字段与 App 端 LogWorkDto 对齐 */
+    public static record WorkResp(
+            Integer actionId,
+            Integer groupId,
+            Integer acOrder,
+            Integer score
+    ) {}
 }
