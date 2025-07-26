@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/log/session")
 public class LogSessionController {
 
+    
+
     private final LogSessionService sessionService;
 
     public LogSessionController(LogSessionService sessionService) {
@@ -80,7 +82,7 @@ public class LogSessionController {
     public record LogItemReq(
             Integer type,
             Integer tOrder,
-            Integer tWeight,
+            Float tWeight,
             Integer num,
             Integer avgScore
     ) { }

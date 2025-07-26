@@ -6,11 +6,11 @@ public class LogItemDto {
     private Integer type;
     private Integer number;
     private Integer tOrder;
-    private Integer tWeight;
+    private Float tWeight;
     private Integer tAvgScore;
     // 构造器、getter、setter
     public LogItemDto(Integer groupId, Integer type, Integer number,
-                   Integer torder, Integer tweight, Integer tavgScore) {
+                   Integer torder, Float tweight, Integer tavgScore) {
         this.groupId   = groupId;
         this.type      = type;
         this.number    = number;
@@ -43,10 +43,10 @@ public class LogItemDto {
     public void setTOrder(Integer tOrder) {
         this.tOrder = tOrder;
     }
-    public Integer getWeight() {
+    public Float getWeight() {
         return tWeight;
     }
-    public void setWeight(Integer tWeight) {
+    public void setWeight(Float tWeight) {
         this.tWeight = tWeight;
     }
     public Integer getAvgScore() {

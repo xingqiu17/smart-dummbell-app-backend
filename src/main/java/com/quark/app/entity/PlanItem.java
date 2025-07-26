@@ -32,7 +32,7 @@ public class PlanItem implements Serializable {
 
     /** 练习重量 */
     @Column(name = "t_weight", nullable = false)
-    private Integer tWeight;
+    private Float tWeight;
 
     /** 完成标志：0=未完成 1=已完成 */
     @Column(name = "complete", nullable = false)
@@ -75,10 +75,10 @@ public class PlanItem implements Serializable {
         this.tOrder = tOrder;
     }
 
-    public Integer getTWeight() {
+    public Float getTWeight() {
         return tWeight;
     }
-    public void setTWeight(Integer tWeight) {
+    public void setTWeight(Float tWeight) {
         this.tWeight = tWeight;
     }
 

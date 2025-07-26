@@ -30,7 +30,7 @@ public class LogItem implements Serializable {
 
     /** 练习重量 */
     @Column(name = "t_weight", nullable = false)
-    private Integer tWeight;
+    private Float tWeight;
 
     
     /** 练习次数 */
@@ -80,10 +80,10 @@ public class LogItem implements Serializable {
     }
 
 
-    public Integer getTWeight() {
+    public Float getTWeight() {
         return tWeight;
     }
-    public void setTWeight(Integer tWeight) {
+    public void setTWeight(Float tWeight) {
         this.tWeight = tWeight;
     }
 
