@@ -34,9 +34,9 @@ public class PlanItem implements Serializable {
     @Column(name = "t_weight", nullable = false)
     private Float tWeight;
 
-    /** 完成标志：0=未完成 1=已完成 */
-    @Column(name = "complete", nullable = false)
-    private Boolean complete = false;
+    /** 休息时间 */
+    @Column(name = "rest", nullable = false)
+    private Integer rest = 0;
 
     /* ===== Getter / Setter ===== */
 
@@ -82,11 +82,11 @@ public class PlanItem implements Serializable {
         this.tWeight = tWeight;
     }
 
-    public Boolean getComplete() {
-        return complete;
+    public Integer getRest() {
+        return rest;
     }
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
+    public void setRest(Integer rest) {
+        this.rest = rest;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class PlanItem implements Serializable {
                ", number=" + number +
                ", tOrder=" + tOrder +
                ", tWeight=" + tWeight +
-               ", complete=" + complete +
+               ", rest=" + rest +
                '}';
     }
 }

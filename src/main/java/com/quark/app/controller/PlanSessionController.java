@@ -41,7 +41,7 @@ public class PlanSessionController {
                 item.setNumber(i.number());
                 item.setTOrder(i.tOrder());
                 item.setTWeight(i.tWeight());
-                item.setComplete(false);
+                item.setRest(i.rest());
                 return item;
             })
             .toList();
@@ -88,7 +88,8 @@ public class PlanSessionController {
             pi.setNumber(i.number());
             pi.setTOrder(i.tOrder());
             pi.setTWeight(i.tWeight());
-            // 保持 default complete=false
+            pi.setRest(i.rest());
+
             return pi;
         }).collect(Collectors.toList());
         itemService.saveAll(newItems);
@@ -105,7 +106,8 @@ public class PlanSessionController {
             @NotNull Integer type,
             @NotNull Integer number,
             @NotNull Integer tOrder,
-            @NotNull Float   tWeight
+            @NotNull Float   tWeight,
+            @NotNull Integer rest
     ) {}
 
 
@@ -148,7 +150,8 @@ public class PlanSessionController {
         Integer type,
         Integer number,
         Integer tOrder,
-        Float tWeight
+        Float tWeight,
+        Integer rest
     ) {}
 
     public record PlanDayResp(
