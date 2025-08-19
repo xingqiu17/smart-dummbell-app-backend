@@ -6,12 +6,14 @@ public class LogWorkDto {
     private Integer groupId;
     private Integer acOrder;
     private Integer score;
+    private Integer performance; 
     // 构造器、getter、setter
-    public LogWorkDto(Integer actionId, Integer groupId, Integer acOrder, Integer score) {
+    public LogWorkDto(Integer actionId, Integer groupId, Integer acOrder, Integer score, Integer performance) {
         this.actionId = actionId;
         this.groupId  = groupId;
         this.acOrder  = acOrder;
         this.score    = score;
+        this.performance = performance;
     }
     // … getters & setters …
     public Integer getActionId() {
@@ -37,5 +39,11 @@ public class LogWorkDto {
     }
     public void setScore(Integer score) {
         this.score = score;
+    }
+    public Integer getPerformance() {
+        return performance;
+    }
+    public void setPerformance(Integer performance) {
+        this.performance = performance;
     }
 }

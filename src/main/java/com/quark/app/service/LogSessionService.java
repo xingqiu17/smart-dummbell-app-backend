@@ -116,6 +116,8 @@ public class LogSessionService {
                 w.setTAcOrder(wc.acOrder());                     // 注意：实体方法名为 setTAcOrder
                 Integer score = wc.score();
                 w.setScore(score != null ? score : 0);           // 非空字段默认值
+                Integer perf = wc.performance();
+                w.setPerformance(perf != null ? perf : 0);  // ★ 新增：写入 performance，默认 0
                 worksToSave.add(w);
             }
         }
@@ -159,6 +161,7 @@ public class LogSessionService {
 
     public record LogWorkCreate(
             Integer acOrder,
-            Integer score                      // 可为 null；服务端默认 0
+            Integer score,                      // 可为 null；服务端默认 0
+            Integer performance                // 可为 null；服务端默认 0
     ) {}
 }

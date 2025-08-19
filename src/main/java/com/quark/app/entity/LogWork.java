@@ -31,6 +31,10 @@ public class LogWork implements Serializable {
     @Column(name = "score", nullable = false)
     private Integer score;
 
+    /** 练习得分 */
+    @Column(name = "performance", nullable = false)
+    private Integer performance;
+
 
     /* ===== Getter / Setter ===== */
 
@@ -67,6 +71,12 @@ public class LogWork implements Serializable {
         this.score = score;
     }
 
+    public Integer getPerformance() {
+        return performance;
+    }
+    public void setPerformance(Integer performance) {
+        this.performance = performance;
+    }
 
 
     @Override
@@ -76,6 +86,7 @@ public class LogWork implements Serializable {
                ", groupId=" + (group != null ? group.getGroupId() : null) +
                ", acOrder=" + acOrder +
                ", score=" + score +
+               ", performance=" + performance +
                '}';
     }
 }

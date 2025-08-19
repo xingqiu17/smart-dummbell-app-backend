@@ -2,6 +2,9 @@ package com.quark.app.controller;
 
 import com.quark.app.entity.LogWork;
 import com.quark.app.service.LogWorkService;
+
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +43,8 @@ public class LogWorkController {
                         w.getActionId(),
                         (w.getGroup() != null ? w.getGroup().getGroupId() : groupId),
                         w.getTAcOrder(),
-                        w.getScore()
+                        w.getScore(),
+                        w.getPerformance()
                 ))
                 .toList();
         return ResponseEntity.ok(resp);
@@ -51,6 +55,7 @@ public class LogWorkController {
             Integer actionId,
             Integer groupId,
             Integer acOrder,
-            Integer score
+            Integer score,
+            Integer performance
     ) {}
 }

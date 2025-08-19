@@ -55,7 +55,8 @@ public class LogDayService {
              w.getActionId(),
              w.getGroup().getGroupId(),
              w.getTAcOrder(),
-             w.getScore()
+             w.getScore(),
+             w.getPerformance()
          ))
          .collect(Collectors.toList());
 

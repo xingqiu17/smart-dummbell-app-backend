@@ -1,5 +1,6 @@
 package com.quark.app.controller;
 
+import com.quark.app.controller.LogSessionController.LogDayResp;
 import com.quark.app.entity.LogItem;
 import com.quark.app.entity.LogSession;
 import com.quark.app.service.LogSessionService;
@@ -42,7 +43,8 @@ public class LogSessionController {
                                         .stream()
                                         .map(w -> new LogSessionService.LogWorkCreate(
                                                 w.acOrder(),
-                                                w.score() // 允许为 null，Service 默认置 0
+                                                w.score(), // 允许为 null，Service 默认置 0
+                                                w.performance()
                                         ))
                                         .toList()
                         ))
@@ -99,7 +101,8 @@ public class LogSessionController {
     /** 单个动作得分请求体 */
     public record LogWorkReq(
             Integer acOrder,
-            Integer score                 // 可为 null，服务端默认置 0
+            Integer score,                 // 可为 null，服务端默认置 0
+            Integer performance
     ) { }
 
     /** 返回给前端的完整训练记录（保持原有结构：session + items） */
