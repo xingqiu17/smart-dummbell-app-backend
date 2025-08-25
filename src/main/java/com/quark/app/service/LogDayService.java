@@ -27,7 +27,7 @@ public class LogDayService {
         LogSessionDto sessionDto = sessionRepo.findByUserIdAndDate(userId, date)
             .stream()
             .findFirst()
-            .map(s -> new LogSessionDto(s.getRecordId(), s.getUserId(), s.getDate()))
+            .map(s -> new LogSessionDto(s.getRecordId(), s.getUserId(), s.getDate(), s.getHra()))
             .orElse(null);
 
         if (sessionDto == null) {

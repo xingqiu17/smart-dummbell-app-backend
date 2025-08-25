@@ -36,14 +36,16 @@ public class LogSessionService {
      *
      * @param userId 用户 ID
      * @param date   日期 (yyyy-MM-dd)
+     * @param hra    平均心率
      * @param items  该日动作列表（按 t_order 排序）
      * @return 新建的 LogSession（已带自增 record_id）
      */
-    public LogSession createDayRecord(Integer userId, LocalDate date, List<LogItem> items) {
+    public LogSession createDayRecord(Integer userId, LocalDate date, Integer hra, List<LogItem> items) {
         // 1) 保存单个 LogSession（代表一次训练会话）
         LogSession session = new LogSession();
         session.setUserId(userId);
         session.setDate(date);
+        session.setHra(hra);
         LogSession savedSession = sessionRepo.save(session);
 
         // 2) 为这个 LogSession 绑定 LogItem（补默认值，绑定外键）
@@ -69,18 +71,21 @@ public class LogSessionService {
      *
      * @param userId         用户 ID
      * @param date           日期 (yyyy-MM-dd)
+     * @param hra            平均心率
      * @param itemsWithWorks 每个 item 及其下属的 works
      * @return 新建的 LogSession（已带自增 record_id）
      */
     public LogSession createDayRecordWithWorks(
             Integer userId,
             LocalDate date,
+            Integer hra,
             List<LogItemCreate> itemsWithWorks
     ) {
         // 1) 保存 session
         LogSession session = new LogSession();
         session.setUserId(userId);
         session.setDate(date);
+        session.setHra(hra);
         LogSession savedSession = sessionRepo.save(session);
 
         if (itemsWithWorks == null || itemsWithWorks.isEmpty()) {

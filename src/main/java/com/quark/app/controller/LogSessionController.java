@@ -52,7 +52,7 @@ public class LogSessionController {
 
         // 2) 调用 Service：一次性保存 session + items + works（方案 A：显式保存）
         LogSession saved = sessionService.createDayRecordWithWorks(
-                req.userId(), req.date(), itemsWithWorks
+                req.userId(), req.date(), req.hra(), itemsWithWorks
         );
 
         // 3) 为了与原有响应结构保持一致（session + items），此处重查当日并挑出刚创建的那条
@@ -85,6 +85,7 @@ public class LogSessionController {
     public record LogDayCreateReq(
             Integer userId,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            Integer hra,
             List<LogItemReq> items
     ) { }
 

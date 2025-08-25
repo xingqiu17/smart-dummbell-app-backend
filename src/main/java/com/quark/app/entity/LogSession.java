@@ -22,7 +22,9 @@ public class LogSession implements Serializable {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-
+    /** 平均心率 */
+    @Column(name = "hra", nullable = false)
+    private Integer hra;
 
     /* ===== Getter / Setter ===== */
 
@@ -46,6 +48,12 @@ public class LogSession implements Serializable {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+    public Integer getHra() {
+        return hra;
+    }
+    public void setHra(Integer hra) {
+        this.hra = hra;
+    }
 
 
     @Override
@@ -54,6 +62,7 @@ public class LogSession implements Serializable {
                "recordId=" + recordId +
                ", userId=" + userId +
                ", date=" + date +
+               ", hra=" + hra +
                '}';
     }
 }

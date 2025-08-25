@@ -7,11 +7,13 @@ public class LogSessionDto {
     private Integer recordId;
     private Integer userId;
     private LocalDate date;
+    private Integer hra;
     // 构造器、getter、setter
-    public LogSessionDto(Integer recordId, Integer userId, LocalDate date) {
+    public LogSessionDto(Integer recordId, Integer userId, LocalDate date, Integer hra) {
         this.recordId = recordId;
         this.userId   = userId;
         this.date     = date;
+        this.hra      = hra;
     }
     // … getters & setters …
     public Integer getRecordId() {
@@ -31,5 +33,11 @@ public class LogSessionDto {
     }
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    public Integer getHra() {
+        return hra;
+    }
+    public void setHra(Integer hra) {
+        this.hra = hra;
     }
 }
